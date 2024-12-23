@@ -25,6 +25,7 @@
         }
         .activity {
             display: flex;
+            align-items: center;
             justify-content: space-between;
             padding: 10px 0;
             border-bottom: 1px solid #ddd;
@@ -35,13 +36,27 @@
         .time {
             font-weight: bold;
             color: #555;
+            flex: 1;
         }
         .task {
-            flex: 1;
+            flex: 2;
             margin-left: 10px;
         }
-        .done {
+        .task.done {
             color: green;
+            text-decoration: line-through;
+        }
+        .edit-button {
+            margin-left: 10px;
+            background-color: #ffc107;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .edit-button:hover {
+            background-color: #e0a800;
         }
         button {
             margin: 20px 0;
@@ -67,11 +82,23 @@
 
     <script>
         const schedule = [
-            { time: "7:00 AM - 8:30 AM", task: "Morning Routine", done: false },
-            { time: "8:30 AM - 10:30 AM", task: "Coding Practice", done: false },
-            { time: "10:30 AM - 11:30 AM", task: "New Learning", done: false },
-            { time: "12:00 PM - 1:00 PM", task: "Japanese Practice", done: false },
-            { time: "4:00 PM - 5:30 PM", task: "Valorant Practice", done: false },
+            { time: "7:00 AM - 7:30 AM", task: "Wake up, freshen up, and hydrate", done: false },
+            { time: "7:30 AM - 8:00 AM", task: "Light exercise or yoga to boost energy", done: false },
+            { time: "8:00 AM - 8:30 AM", task: "Breakfast", done: false },
+            { time: "8:30 AM - 10:30 AM", task: "Intensive coding session. Work on projects, algorithms, or debugging", done: false },
+            { time: "10:30 AM - 11:30 AM", task: "Dive into a new topic (e.g., technical skills, reading, or online courses)", done: false },
+            { time: "11:30 AM - 12:00 PM", task: "Short break. Relax or go for a quick walk", done: false },
+            { time: "12:00 PM - 1:00 PM", task: "Practice vocabulary, kanji, grammar, or listening skills. Use apps or engage with Japanese media", done: false },
+            { time: "1:00 PM - 2:00 PM", task: "Lunch and relax. Light activities or mindfulness", done: false },
+            { time: "2:00 PM - 4:00 PM", task: "Continue with coding, focusing on implementation or learning frameworks", done: false },
+            { time: "4:00 PM - 5:30 PM", task: "Valorant practice. Focus on skill improvement, teamwork, or strategy", done: false },
+            { time: "5:30 PM - 6:00 PM", task: "Take a break. Stretch or have a light snack", done: false },
+            { time: "6:00 PM - 7:00 PM", task: "Review and reinforce Japanese skills or practice conversational drills", done: false },
+            { time: "7:00 PM - 8:00 PM", task: "Dinner and unwind with something enjoyable", done: false },
+            { time: "8:00 PM - 9:00 PM", task: "Explore personal interests or light reading", done: false },
+            { time: "9:00 PM - 9:30 PM", task: "Reflect on the day and plan tomorrow", done: false },
+            { time: "9:30 PM - 10:00 PM", task: "Wind down with meditation or relaxing activities", done: false },
+            { time: "10:00 PM", task: "Go to bed for a full night's rest", done: false }
         ];
 
         function renderSchedule() {
@@ -88,11 +115,27 @@
 
                 const taskDiv = document.createElement("div");
                 taskDiv.className = `task ${item.done ? 'done' : ''}`;
-                taskDiv.textContent = item.task;
-                taskDiv.onclick = () => toggleDone(index);
+                
+                const taskCheckbox = document.createElement("input");
+                taskCheckbox.type = "checkbox";
+                taskCheckbox.checked = item.done;
+                taskCheckbox.onchange = () => toggleDone(index);
+
+                const taskLabel = document.createElement("span");
+                taskLabel.textContent = item.task;
+                taskLabel.style.marginLeft = "5px";
+
+                taskDiv.appendChild(taskCheckbox);
+                taskDiv.appendChild(taskLabel);
+
+                const editButton = document.createElement("button");
+                editButton.className = "edit-button";
+                editButton.textContent = "Edit";
+                editButton.onclick = () => editTask(index);
 
                 activityDiv.appendChild(timeDiv);
                 activityDiv.appendChild(taskDiv);
+                activityDiv.appendChild(editButton);
                 scheduleDiv.appendChild(activityDiv);
             });
         }
@@ -100,6 +143,14 @@
         function toggleDone(index) {
             schedule[index].done = !schedule[index].done;
             renderSchedule();
+        }
+
+        function editTask(index) {
+            const newTask = prompt("Edit Task:", schedule[index].task);
+            if (newTask !== null && newTask.trim() !== "") {
+                schedule[index].task = newTask;
+                renderSchedule();
+            }
         }
 
         function shareSchedule() {
