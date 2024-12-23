@@ -46,18 +46,6 @@
             color: green;
             text-decoration: line-through;
         }
-        .edit-button {
-            margin-left: 10px;
-            background-color: #ffc107;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 5px;
-            cursor: pointer;
-        }
-        .edit-button:hover {
-            background-color: #e0a800;
-        }
         button {
             margin: 20px 0;
             width: 100%;
@@ -128,14 +116,8 @@
                 taskDiv.appendChild(taskCheckbox);
                 taskDiv.appendChild(taskLabel);
 
-                const editButton = document.createElement("button");
-                editButton.className = "edit-button";
-                editButton.textContent = "Edit";
-                editButton.onclick = () => editTask(index);
-
                 activityDiv.appendChild(timeDiv);
                 activityDiv.appendChild(taskDiv);
-                activityDiv.appendChild(editButton);
                 scheduleDiv.appendChild(activityDiv);
             });
         }
@@ -143,14 +125,6 @@
         function toggleDone(index) {
             schedule[index].done = !schedule[index].done;
             renderSchedule();
-        }
-
-        function editTask(index) {
-            const newTask = prompt("Edit Task:", schedule[index].task);
-            if (newTask !== null && newTask.trim() !== "") {
-                schedule[index].task = newTask;
-                renderSchedule();
-            }
         }
 
         function shareSchedule() {
