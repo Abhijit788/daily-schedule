@@ -47,7 +47,7 @@
             text-decoration: line-through;
         }
         button {
-            margin: 20px 0;
+            margin: 10px 0;
             width: 100%;
             padding: 10px;
             background-color: #007BFF;
@@ -65,6 +65,8 @@
     <div class="container">
         <h1>Daily Schedule</h1>
         <div id="schedule"></div>
+        <button onclick="resetSchedule()">Reset All</button>
+        <button onclick="markAllDone()">Mark All Done</button>
         <button onclick="shareSchedule()">Share Schedule</button>
     </div>
 
@@ -124,6 +126,16 @@
 
         function toggleDone(index) {
             schedule[index].done = !schedule[index].done;
+            renderSchedule();
+        }
+
+        function resetSchedule() {
+            schedule.forEach(item => item.done = false);
+            renderSchedule();
+        }
+
+        function markAllDone() {
+            schedule.forEach(item => item.done = true);
             renderSchedule();
         }
 
