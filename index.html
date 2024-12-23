@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .activity {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .activity:last-child {
+            border-bottom: none;
+        }
+        .time {
+            font-weight: bold;
+            color: #555;
+        }
+        .task {
+            flex: 1;
+            margin-left: 10px;
+        }
+        .done {
+            color: green;
+        }
+        button {
+            margin: 20px 0;
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Daily Schedule</h1>
+        <div id="schedule"></div>
+        <button onclick="shareSchedule()">Share Schedule</button>
+    </div>
+
+    <script>
+        const schedule = [
+            { time: "7:00 AM - 8:30 AM", task: "Morning Routine", done: false },
+            { time: "8:30 AM - 10:30 AM", task: "Coding Practice", done: false },
+            { time: "10:30 AM - 11:30 AM", task: "New Learning", done: false },
+            { time: "12:00 PM - 1:00 PM", task: "Japanese Practice", done: false },
+            { time: "4:00 PM - 5:30 PM", task: "Valorant Practice", done: false },
+        ];
+
+        function renderSchedule() {
+            const scheduleDiv = document.getElementById("schedule");
+            scheduleDiv.innerHTML = "";
+
+            schedule.forEach((item, index) => {
+                const activityDiv = document.createElement("div");
+                activityDiv.className = "activity";
+
+                const timeDiv = document.createElement("div");
+                timeDiv.className = "time";
+                timeDiv.textContent = item.time;
+
+                const taskDiv = document.createElement("div");
+                taskDiv.className = `task ${item.done ? 'done' : ''}`;
+                taskDiv.textContent = item.task;
+                taskDiv.onclick = () => toggleDone(index);
+
+                activityDiv.appendChild(timeDiv);
+                activityDiv.appendChild(taskDiv);
+                scheduleDiv.appendChild(activityDiv);
+            });
+        }
+
+        function toggleDone(index) {
+            schedule[index].done = !schedule[index].done;
+            renderSchedule();
+        }
+
+        function shareSchedule() {
+            const shareData = {
+                title: "Daily Schedule",
+                text: "Check out my daily schedule!",
+                url: document.URL
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData).catch(console.error);
+            } else {
+                alert("Sharing is not supported on this browser.");
+            }
+        }
+
+        renderSchedule();
+    </script>
+</body>
+</html>
